@@ -1,0 +1,53 @@
+# @package _global_
+defaults:
+  - /pipeline: hsmr
+  - /data: skel-hsmr_v1_full
+  - /callback/ckpt/top1-p1k@callbacks.ckpt
+  - _self_
+
+exp_topic: HSMR-legion-head-finetune
+exp_tag: coco-smoke
+seed: 42
+enable_time_monitor: false
+init_backbone: false
+ckpt_path: null
+resume_path: null
+callbacks:
+  ckpt:
+    every_n_train_steps: 50
+logger:
+  interval: 1000
+  interval_skelify: 10
+  samples_per_record: 0
+pipeline:
+  cfg:
+    backbone: ${_hub_.models.backbones.vit_h}
+    backbone_ckpt: null
+    freeze_backbone: true
+    SKEL: ${_hub_.models.body_models.skel_mix_hsmr}
+data:
+  cfg:
+    train:
+      epoch_size: 1000
+      datasets:
+        - name: COCO14-SUBSET
+          item:
+            name: COCO14-SUBSET
+            urls: ${_pm_.inputs}/hsmr_training_data/coco14-tars/000000.tar
+            epoch_size: 1000
+          weight: 1.0
+      dataloader:
+        batch_size: 1
+        num_workers: 1
+        prefetch_factor: 1
+    mocap: null
+    eval: null
+task: fit
+pl_trainer:
+  devices: 1
+  max_epochs: 1
+  max_steps: 100
+  deterministic: true
+  precision: 16-mixed
+  num_sanity_val_steps: 0
+  log_every_n_steps: 10

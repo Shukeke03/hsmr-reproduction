@@ -1,0 +1,48 @@
+{
+  "model": {
+    "repo_id": "IsshikiHugh/HSMR-data_inputs",
+    "revision": "7deaf5591633918e46b140f704c5f2d0facb09b2"
+  },
+  "dataset": {
+    "repo_id": "IsshikiHugh/HSMR-TrainingData",
+    "revision": "04ef74fc0b74d8a0d16bcc320637b31e9ad9341c"
+  },
+  "files": {
+    "backbone/vitpose_backbone.pth": {
+      "size": 2523785910,
+      "sha256": "9f6dc6a56dc20399e0eda43f3ba93b3a8ce493e362f542ae68f3c4c406efa638"
+    },
+    "body_models.tar.gz": {
+      "size": 314586521,
+      "sha256": "73acc35f64ea10a9343d67e60e37b2571bf76cb991424842443c27241911cc8f"
+    },
+    "body_models/J_regressor_SKEL_mix_MALE.pkl": {
+      "size": 1925,
+      "sha256": "ebbbbf45d8d424aaed311e42fa2ce0b783de430e592e15489430da6654bf71f0"
+    },
+    "body_models/J_regressor_SMPL_MALE.pkl": {
+      "size": 1323041,
+      "sha256": "1633f4b111e72cf36efe32a003d79bf76053c2124f1f7b8cfbb346676801aff4"
+    },
+    "body_models/SMPL_to_J19.pkl": {
+      "size": 1047441,
+      "sha256": "a66e340412ebd320a5c694bee5fb2674f700736709bbdd93859e970f0e59f47c"
+    },
+    "hmr2_evaluation_data.tar.gz": {
+      "size": 77556233,
+      "sha256": "7974c8bb966cd589a45f7daa892434a0a9e15282c9ae5c3141d2aa4cda9f5b14"
+    },
+    "hsmr_evaluation_data.tar.gz": {
+      "size": 105085074,
+      "sha256": "9cdcf1e933e571060f30695ab3d51f0d48934bf49e70aaebb324c8efbd329123"
+    },
+    "released_models/HSMR-ViTH-r1d1.tar.gz": {
+      "size": 2509409979,
+      "sha256": "28b80613a6d43e56526d365492b34ddba343b0c2e69bdc319a9b2b968474334b"
+    },
+    "coco14-tars/000000.tar": {
+      "size": 184002560,
+      "sha256": "57b7269d07df4edaa3c403c69fc49554f09fbff272ee3c2c22b31cc5a064b440"
+    }
+  }
+}

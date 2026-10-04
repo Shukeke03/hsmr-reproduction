@@ -62,7 +62,7 @@ def entrypoint_with_args(*args, log_cfg=True, **kwargs):
         # Import extra pre-specified arguments.
         if len(overrides) > 0:
             # The args from command line have higher priority, so put them in the back.
-            sys.argv = sys.argv[:1] + overrides + sys.argv[1:]
+            sys.argv = sys.argv[:1] + overrides
             _log_exp_info(func.__name__, overrides)
 
         @hydra.main(version_base=None, config_path=str(PM.configs), config_name='base.yaml')

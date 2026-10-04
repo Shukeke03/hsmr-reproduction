@@ -1,3 +1,14 @@
+# HSMR 复现与微调版本管理
+
+开发方式：Mac 本地修改代码，`ssh legion` 完成数据准备和 CUDA 训练。
+公开仓库：https://github.com/Shukeke03/hsmr-reproduction
+
+环境、目录、数据大小、微调命令和复现边界见
+[复现开发指南](docs/reproduction/WORKFLOW.md)。两端均使用 Miniforge `hsmr` 环境。
+当前已拉取官方代码并增加单卡微调支持；论文指标尚未复现。
+
+---
+
 # Reconstructing Humans with a Biomechanically Accurate Skeleton
 
 <a href="https://isshikihugh.github.io/HSMR/"><img src="https://img.shields.io/website?url=https%3A%2F%2Fisshikihugh.github.io%2FHSMR%2F&label=Project%20Page&up_message=Online&up_color=CAB7A5&down_message=Offline&down_color=%23FF3F4D&logo=googlechrome&logoColor=white"></a>

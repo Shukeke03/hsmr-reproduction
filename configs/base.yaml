@@ -17,7 +17,7 @@ exp_topic: !!null  # Theme of the experiment.
 exp_tag: 'debug'  # Tag of the experiment.
 
 
-output_dir: ${_pm_.root}/data_outputs/exp/${exp_name}  # Output directory for the experiment.
+output_dir: ${_pm_.outputs}/exp/${exp_name}  # Output directory for the experiment.
 # output_dir: ${_pm_.root}/data_outputs/exp/${now:%Y-%m-%d}/${exp_name}  # Output directory for the experiment.
 
 hydra:

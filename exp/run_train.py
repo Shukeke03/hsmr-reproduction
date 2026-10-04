@@ -16,12 +16,18 @@ def main(cfg:DictConfig):
     data_module = instantiate(cfg.data, _recursive_=False)
 
     get_logger().info('Setting pipeline...')
-    pipeline = instantiate(cfg.pipeline, _recursive_=False)
+    pipeline = instantiate(cfg.pipeline, init_backbone=cfg.get('init_backbone', True), _recursive_=False)
     pipeline.set_data_adaption(data_module.name)
 
     if cfg.ckpt_path is not None:
         get_logger().info(f'Loading checkpoint from: {cfg.ckpt_path}')
-        pipeline.load_state_dict(torch.load(cfg.ckpt_path)['state_dict'])
+        # Body model buffers belong to the locally installed licensed SKEL model.
+        state = torch.load(cfg.ckpt_path, map_location='cpu')['state_dict']
+        state = {k: v for k, v in state.items() if not k.startswith('skel_model.')}
+        missing, unexpected = pipeline.load_state_dict(state, strict=False)
+        if unexpected or any(not k.startswith('skel_model.') for k in missing):
+            raise RuntimeError(f'Checkpoint mismatch: missing={missing}, unexpected={unexpected}')
+        del state
 
     logger = TensorBoardLogger(
             # save_dir = PM.outputs / 'tb_logs',
@@ -48,7 +54,7 @@ def main(cfg:DictConfig):
     trainer.fit(
         model      = pipeline,
         datamodule = data_module,
-        ckpt_path  = 'last',
+        ckpt_path  = cfg.get('resume_path', None),
     )
 
 

@@ -1,0 +1,81 @@
+{
+  "measured_on": "2026-10-04",
+  "training_repository": "IsshikiHugh/HSMR-TrainingData",
+  "training_tar_bytes": 342581780480,
+  "training": {
+    "aic-tars": {
+      "files": 210,
+      "bytes": 21532344320
+    },
+    "ava-tars": {
+      "files": 185,
+      "bytes": 9626368000
+    },
+    "coco14-tars": {
+      "files": 18,
+      "bytes": 3238400000
+    },
+    "coco14vit-tars": {
+      "files": 45,
+      "bytes": 8266260480
+    },
+    "h36m-tars": {
+      "files": 313,
+      "bytes": 23741173760
+    },
+    "insta-tars": {
+      "files": 3658,
+      "bytes": 268202260480
+    },
+    "mpi_inf_3dhp-tars": {
+      "files": 13,
+      "bytes": 2975170560
+    },
+    "mpii-tars": {
+      "files": 10,
+      "bytes": 4999802880
+    }
+  },
+  "models": [
+    {
+      "path": ".gitattributes",
+      "size": 2681
+    },
+    {
+      "path": "README.md",
+      "size": 348
+    },
+    {
+      "path": "backbone/vitpose_backbone.pth",
+      "size": 2523785910
+    },
+    {
+      "path": "body_models.tar.gz",
+      "size": 314586521
+    },
+    {
+      "path": "body_models/J_regressor_SKEL_mix_MALE.pkl",
+      "size": 1925
+    },
+    {
+      "path": "body_models/J_regressor_SMPL_MALE.pkl",
+      "size": 1323041
+    },
+    {
+      "path": "body_models/SMPL_to_J19.pkl",
+      "size": 1047441
+    },
+    {
+      "path": "hmr2_evaluation_data.tar.gz",
+      "size": 77556233
+    },
+    {
+      "path": "hsmr_evaluation_data.tar.gz",
+      "size": 105085074
+    },
+    {
+      "path": "released_models/HSMR-ViTH-r1d1.tar.gz",
+      "size": 2509409979
+    }
+  ]
+}

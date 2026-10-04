@@ -57,6 +57,11 @@ class HSMRPipeline(pl.LightningModule):
             # For inference mode with tuned backbone checkpoints, we don't need to initialize the backbone here.
             self._init_backbone()
 
+        # Apply freezing even when initialized from a complete released checkpoint.
+        if self.cfg.get('freeze_backbone', False):
+            self.backbone.requires_grad_(False)
+            self.backbone.eval()
+
         # Loss layers.
         self.kp_3d_loss  = Keypoint3DLoss(loss_type='l1')
         self.kp_2d_loss  = Keypoint2DLoss(loss_type='l1')
@@ -80,6 +85,12 @@ class HSMRPipeline(pl.LightningModule):
             self.wis3d = Wis3D(seq_name=PM.cfg.exp_name)
         else:
             self.wis3d = None
+
+    def train(self, mode=True):
+        super().train(mode)
+        if self.cfg.get('freeze_backbone', False):
+            self.backbone.eval()
+        return self
 
     def set_data_adaption(self, data_module_name:Optional[str]=None):
         if data_module_name is None:
@@ -171,8 +182,11 @@ class HSMRPipeline(pl.LightningModule):
             # 3.4. Extract G.T. skin mesh only for visualization.
             gt_skel_params = HSMRPipeline._adapt_skel_params(batch['gt_params'])  # {poses, betas}
             gt_skel_params = {k: v[:self.cfg.logger.samples_per_record] for k, v in gt_skel_params.items()}
-            skel_outputs = self.skel_model(**gt_skel_params, skelmesh=False)
-            gt_skin = skel_outputs.skin_verts  # (B', V=6890, 3)
+            if self.cfg.logger.samples_per_record > 0:
+                skel_outputs = self.skel_model(**gt_skel_params, skelmesh=False)
+                gt_skin = skel_outputs.skin_verts  # (B', V=6890, 3)
+            else:
+                gt_skin = pd_skin[:0]
             gt_valid_body = batch['has_gt_params']['poses_body'][:self.cfg.logger.samples_per_record]  # {poses_orient, poses_body, betas}
             gt_valid_orient = batch['has_gt_params']['poses_orient'][:self.cfg.logger.samples_per_record]  # {poses_orient, poses_body, betas}
             gt_valid_betas = batch['has_gt_params']['betas'][:self.cfg.logger.samples_per_record]  # {poses_orient, poses_body, betas}
@@ -375,11 +389,6 @@ class HSMRPipeline(pl.LightningModule):
         if len(unexpected) > 0:
             get_logger().warning(f'Unexpected keys in backbone: {unexpected}')
 
-        # 2. Freeze the backbone if needed.
-        if self.cfg.get('freeze_backbone', False):
-            self.backbone.eval()
-            self.backbone.requires_grad_(False)
-
     def _compute_losses_main(
         self,
         loss_weights : Dict,
@@ -517,6 +526,9 @@ class HSMRPipeline(pl.LightningModule):
             summary_writer.add_scalar(f'{mode}/losses_main/{loss_name}', loss_val, self.global_step)
         for loss_name, loss_val in losses_disc.items():
             summary_writer.add_scalar(f'{mode}/losses_disc/{loss_name}', loss_val, self.global_step)
+
+        if self.cfg.logger.samples_per_record <= 0:
+            return
 
         # 2. Visualization.
         try:

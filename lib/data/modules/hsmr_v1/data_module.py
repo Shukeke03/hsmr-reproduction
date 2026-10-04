@@ -62,7 +62,8 @@ class DataModule(pl.LightningDataModule):
             dataset = load_tars_as_wds(
                     ld_cfg,
                     ds_cfg.item.urls,
-                    ds_cfg.item.epoch_size
+                    resampled=True,
+                    epoch_size=ds_cfg.item.epoch_size,
                 )
 
             names.append(ds_cfg.name)
@@ -77,7 +78,7 @@ class DataModule(pl.LightningDataModule):
         self.train_datasets = datasets
         self.train_dataset = MixedWebDataset()
         self.train_dataset.append(wds.RandomMix(datasets, weights))
-        self.train_dataset = self.train_dataset.with_epoch(50_000).shuffle(1000, initial=1000)
+        self.train_dataset = self.train_dataset.with_epoch(self.cfg_train.get('epoch_size', 50_000)).shuffle(1000, initial=1000)
 
 
     def _setup_mocap(self):

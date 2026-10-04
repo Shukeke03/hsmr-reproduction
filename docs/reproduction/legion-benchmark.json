@@ -1,0 +1,38 @@
+{
+  "crop": "whole image padded to square; no detector",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+  "backbone_parameters": 630912000,
+  "head_parameters": 39547037,
+  "inference_ms_per_image": 42.72867830004543,
+  "body_mesh_computed": true,
+  "mesh_vertices": [
+    1,
+    6890,
+    3
+  ],
+  "joints_shape": [
+    1,
+    44,
+    3
+  ],
+  "skeleton_vertices": [
+    1,
+    247252,
+    3
+  ],
+  "synthetic_head_benchmark": {
+    "steps": 20,
+    "seconds_per_step": 0.4720329900999786,
+    "includes": "frozen backbone forward + head forward/backward + AdamW + SKEL mesh/joints + original HSMR main losses",
+    "excludes": "SKELify, data loading, checkpoints",
+    "final_loss": 0.034292250871658325
+  },
+  "peak_cuda_allocated_bytes": 3477200896,
+  "peak_cuda_reserved_bytes": 3577741312,
+  "measured_on": "2026-10-04",
+  "torch": "2.3.1+cu121",
+  "seed": 42,
+  "batch_size": 1,
+  "training_data_downloaded": false
+}

@@ -14,6 +14,9 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root', type=Path, default=Path(os.environ.get('HSMR_INPUTS_ROOT', '~/workspace/datasets/HSMR')).expanduser())
     p.add_argument('--assets', action='store_true', help='Released model and three regressors')
+    p.add_argument('--assets-only', action='store_true', help='Download released weights and regressors; no training data')
+    p.add_argument('--body-models', action='store_true', help='Official public body model archive including SKEL v1.1.1')
+    p.add_argument('--no-training-data', action='store_true', help='Skip all training shards')
     p.add_argument('--backbone', action='store_true', help='Backbone initialization for training from scratch')
     p.add_argument('--evaluation-labels', action='store_true', help='Labels only; images require separate preparation')
     p.add_argument('--dataset', default='coco14', choices=['coco14','coco14vit','h36m','mpii','mpi_inf_3dhp','aic','ava','insta','all'])
@@ -29,19 +32,23 @@ def main():
     api = HfApi()
     selected = []
     model_paths = []
-    if a.assets:
+    if a.assets or a.assets_only:
         model_paths += ['released_models/HSMR-ViTH-r1d1.tar.gz',
                         'body_models/SMPL_to_J19.pkl',
                         'body_models/J_regressor_SKEL_mix_MALE.pkl',
                         'body_models/J_regressor_SMPL_MALE.pkl']
     if a.backbone:
         model_paths += ['backbone/vitpose_backbone.pth']
+    if a.body_models:
+        model_paths += ['body_models.tar.gz']
     if a.evaluation_labels:
         model_paths += ['hmr2_evaluation_data.tar.gz','hsmr_evaluation_data.tar.gz']
     for f in api.list_repo_tree('IsshikiHugh/HSMR-data_inputs', recursive=True, revision=lock['model']['revision']):
         if f.path in model_paths:
             selected.append(('model','IsshikiHugh/HSMR-data_inputs',f,a.root))
     names = ['coco14','coco14vit','h36m','mpii','mpi_inf_3dhp','aic','ava','insta'] if a.dataset == 'all' else [a.dataset]
+    if a.assets_only or a.no_training_data:
+        names = []
     for name in names:
         files = sorted(api.list_repo_tree('IsshikiHugh/HSMR-TrainingData', repo_type='dataset', path_in_repo=name+'-tars', revision=lock['dataset']['revision']), key=lambda f:f.path)
         files = [f for f in files if f.path.endswith('.tar')]

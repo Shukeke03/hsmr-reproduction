@@ -29,3 +29,4 @@ huggingface-hub==0.30.2
 pytest==8.3.5
 wheel
 setuptools==69.5.1
+pillow==10.4.0

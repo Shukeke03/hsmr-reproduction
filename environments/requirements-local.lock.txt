@@ -68,7 +68,7 @@ opencv-python==4.10.0.82
 packaging==26.3
 parso==0.8.7
 pexpect==4.9.0
-pillow==12.3.0
+pillow==10.4.0
 pip==26.2.1
 pluggy==1.6.0
 portalocker==4.4.0

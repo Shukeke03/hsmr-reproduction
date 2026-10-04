@@ -12,9 +12,10 @@ if [[ ! -x "$miniforge_prefix/envs/hsmr/bin/python" ]]; then
 fi
 python_bin="$miniforge_prefix/envs/hsmr/bin/python"
 if [[ "$(uname -s)" == Linux ]]; then
-  "$python_bin" -m pip install torch==2.3.1 torchvision==0.18.1 --index-url https://download.pytorch.org/whl/cu121
+  "$python_bin" -m pip install torch==2.3.1 torchvision==0.18.1 numpy==1.24.4 pillow==10.4.0 \
+    --index-url https://download.pytorch.org/whl/cu121 --extra-index-url https://pypi.org/simple
 else
-  "$python_bin" -m pip install torch==2.3.1 torchvision==0.18.1
+  "$python_bin" -m pip install torch==2.3.1 torchvision==0.18.1 numpy==1.24.4 pillow==10.4.0
 fi
 "$python_bin" -m pip install -r environments/requirements-common.txt
 "$python_bin" -m pip install -e .

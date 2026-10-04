@@ -16,4 +16,8 @@ if [[ ! -f "$HSMR_INPUTS_ROOT/body_models/skel/skel_male.pkl" ]]; then
   echo 'Missing licensed SKEL v1.1.1: install it under body_models/skel.' >&2
   exit 1
 fi
+if [[ ! -f "$HSMR_INPUTS_ROOT/body_models/skel/changelog_v1.1.1.txt" ]]; then
+  echo 'SKEL version must be v1.1.1; changelog_v1.1.1.txt is missing.' >&2
+  exit 1
+fi
 exec "$python_bin" exp/run_train.py exp=hsmr/legion_finetune "ckpt_path=$checkpoint" "$@"
